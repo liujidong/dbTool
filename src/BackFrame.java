@@ -3,7 +3,6 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -52,12 +51,12 @@ public class BackFrame extends JFrame {
         JLabel messageLabel = new JLabel("选择需要备份的数据库：");
         messageLabel.setBounds(37, 39, 148, 15);
         panel.add(messageLabel);
-        List list = dataBackup.getDatabase();
-        String[] daName = new String[list.size()];
-        for(int i = 0;i<list.size();i++){
-            daName[i] = list.get(i).toString();
-        }
-        dataBaseComboBox  = new JComboBox(daName);
+//        List list = dataBackup.getDatabase();
+//        String[] daName = new String[list.size()];
+//        for(int i = 0;i<list.size();i++){
+//            daName[i] = list.get(i).toString();
+//        }
+        dataBaseComboBox  = new JComboBox();//daName);
         dataBaseComboBox.setBounds(182, 36, 187, 21);
         panel.add(dataBaseComboBox);
         
@@ -78,7 +77,7 @@ public class BackFrame extends JFrame {
         });
         backButton.setBounds(171, 141, 93, 23);
         panel.add(backButton);
-    }	
+    }
 	//备份按钮的单击事件
 	protected void do_backButton_actionPerformed(ActionEvent agr0) {
 		String dataBase = dataBaseComboBox.getSelectedItem().toString();
