@@ -5,15 +5,19 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+import javax.swing.JFileChooser;
 
 public class DataBackup {
 	Connection conn = null;
-	public Connection getConnection() {
+	public Connection getConnection(Properties prop) {
+		if(null == prop) {return null;}
 		try {
-			Class.forName("com.mysql.jdbc.Driver");//加载MySQL数据驱动
-			String url = "jdbc:mysql://localhost:3306/mysqldemo";//定义与连接数据库的url
-			String user = "root";//定义连接数据库的用户名
-			String password = "123456";//定义连接数据库的密码
+			Class.forName(prop.getProperty("driverName","com.mysql.jdbc.Driver"));//加载MySQL数据驱动
+			String url = prop.getProperty("url", "jdbc:mysql://localhost:3306/mysqldemo");//定义与连接数据库的url
+			String user = prop.getProperty("user", "root");//定义连接数据库的用户名
+			String password = prop.getProperty("password","123456");//定义连接数据库的密码
 			conn = DriverManager.getConnection(url,user,password);//创建连接
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -21,9 +25,9 @@ public class DataBackup {
 		return conn;
 	}
 	//获取MySQL所有数据库方法
-	public List getDatabase() {
+	public List getDatabases(Properties prop) {
 		List list = new ArrayList();//定义List集合对象
-		Connection con = getConnection();//获取数据库连接
+		Connection con = getConnection(prop);//获取数据库连接
 		Statement st;//定义Statement
 		try {
 			st = con.createStatement();//实例化Statement对象
