@@ -71,6 +71,7 @@ public class BackFrame extends JFrame {
 				fileChooser.setFileFilter(filter);
 				fileChooser.showOpenDialog(getContentPane());// 显示文件选择对话框
 		        List list = dataBackup.getDatabases(ConfigUtil.getProperties(fileChooser));
+		        dataBaseComboBox.removeAll();
 		        for(int i = 0;i<list.size();i++){
 		        	dataBaseComboBox.addItem(list.get(i));
 		        }
@@ -95,11 +96,11 @@ public class BackFrame extends JFrame {
         messageLabel.setBounds(37, 39, 148, 15);
         panel.add(messageLabel);
 //        List list = dataBackup.getDatabase();
-//        String[] daName = new String[list.size()];
+        String[] daName = new String[]{"请选择配置文件"};
 //        for(int i = 0;i<list.size();i++){
 //            daName[i] = list.get(i).toString();
 //        }
-        dataBaseComboBox  = new JComboBox();//daName);
+        dataBaseComboBox  = new JComboBox(daName);
         dataBaseComboBox.setBounds(182, 36, 187, 21);
         panel.add(dataBaseComboBox);
         
@@ -126,9 +127,9 @@ public class BackFrame extends JFrame {
 	protected void do_backButton_actionPerformed(ActionEvent agr0) {
 		String dataBase = dataBaseComboBox.getSelectedItem().toString();
 		String name = nameTextField.getText();
-		if(!dataBase.equals("") && !name.equals("")) {
+		if(!dataBase.equals("请选择配置文件") && !name.equals("")) {
 			dataBackup.mysqldump(dataBase,"D:\\"+name);
+			JOptionPane.showMessageDialog(getContentPane(), "数据备份成功！","信息提示框",JOptionPane.WARNING_MESSAGE);
 		}
-		JOptionPane.showMessageDialog(getContentPane(), "数据备份成功！","信息提示框",JOptionPane.WARNING_MESSAGE);
 	}
 }

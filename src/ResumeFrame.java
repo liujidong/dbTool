@@ -1,26 +1,34 @@
 
 import java.awt.EventQueue;
 import java.awt.FileDialog;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ResumeFrame extends JFrame {
     
     private JPanel contentPane;
     private JTextField fileTextField;
     private JComboBox databaseComboBox;
-    ResumeUtil userDao = new ResumeUtil();
-    
+    ResumeUtil util = new ResumeUtil();
+	private JFileChooser fileChooser = new JFileChooser(new File("."));   
     /**
      * Launch the application.
      */
@@ -42,7 +50,33 @@ public class ResumeFrame extends JFrame {
      */
     public ResumeFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 176);
+        setBounds(100, 100, 450, 200);
+        
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+        
+        JMenu fileMenu = new JMenu("配置文件");
+        fileMenu.setFont(new Font("微软雅黑", Font.PLAIN, 16));
+        menuBar.add(fileMenu);
+        
+        JMenuItem openMenuItem = new JMenuItem("打开");
+        openMenuItem.setFont(new Font("微软雅黑", Font.PLAIN, 16));
+        fileMenu.add(openMenuItem);
+        openMenuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FileFilter filter = new FileNameExtensionFilter("配置文件（properties）", "properties");// 设置文件过滤器				
+				fileChooser.setFileFilter(filter);
+				fileChooser.showOpenDialog(getContentPane());// 显示文件选择对话框
+		        List list = util.getDatabase(ConfigUtil.getProperties(fileChooser));
+		        databaseComboBox.removeAll();
+		        databaseComboBox.addItem("直接恢复");
+		        for(int i = 0;i<list.size();i++){
+		        	databaseComboBox.addItem(list.get(i));
+		        }
+			}
+		});
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -74,11 +108,11 @@ public class ResumeFrame extends JFrame {
         JLabel databaseLabel = new JLabel("恢复数据库：");
         databaseLabel.setBounds(36, 89, 80, 15);
         panel.add(databaseLabel);
-        List list = userDao.getDatabase();
-        String name[] = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            name[i] = (String) list.get(i);
-        }
+//        List list = util.getDatabase();
+        String name[] = new String[]{"请选择配置文件"};//[list.size()];
+//        for (int i = 0; i < list.size(); i++) {
+//            name[i] = (String) list.get(i);
+//        }
         databaseComboBox = new JComboBox(name);
         databaseComboBox.setBounds(125, 86, 174, 21);
         panel.add(databaseComboBox);
@@ -103,8 +137,8 @@ public class ResumeFrame extends JFrame {
     protected void do_resumeButton_actionPerformed(ActionEvent arg0) {        
         String fileName = fileTextField.getText();
         String dataName = databaseComboBox.getSelectedItem().toString();
-        if (!fileName.equals("") && (!dataName.equals(""))) {
-            boolean bool = userDao.mysqlresume(dataName, fileName);
+        if (!fileName.equals("") && (!dataName.equals("请选择配置文件"))) {
+            boolean bool = util.mysqlresume(dataName, fileName);
             JOptionPane.showMessageDialog(getContentPane(), 
                     "数据恢复成功！", "信息提示框", JOptionPane.WARNING_MESSAGE);
         }
