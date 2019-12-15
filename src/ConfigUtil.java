@@ -8,6 +8,7 @@ import java.util.Properties;
 import javax.swing.JFileChooser;
 
 public class ConfigUtil {
+	public static Properties prop = new Properties();
 
 	public static void propertyOut(File file) {
 		Properties prop = new Properties();
@@ -26,7 +27,7 @@ public class ConfigUtil {
 	}
 	public static Properties getProperties(JFileChooser fileChooser) {
 		if(fileChooser.getSelectedFile()!=null) {
-			Properties prop = new Properties();
+			//Properties prop = new Properties();
 			try {
 				InputStream in = new BufferedInputStream(new FileInputStream(fileChooser.getSelectedFile()));
 				prop.load(in);     ///加载属性列表

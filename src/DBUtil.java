@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.swing.JFileChooser;
-
-public class DataBackup {
-	Connection conn = null;
-	public Connection getConnection(Properties prop) {
+public class DBUtil {
+	static Connection conn = null;
+    private static String user="root";
+    private static String passWord = "111";
+	public static Connection getConnection(Properties prop) {
 		if(null == prop) {return null;}
 		try {
 			Class.forName(prop.getProperty("driverName","com.mysql.jdbc.Driver"));//加载MySQL数据驱动
@@ -25,7 +25,7 @@ public class DataBackup {
 		return conn;
 	}
 	//获取MySQL所有数据库方法
-	public List getDatabases(Properties prop) {
+	public static List getDatabases(Properties prop) {
 		List list = new ArrayList();//定义List集合对象
 		Connection con = getConnection(prop);//获取数据库连接
 		Statement st;//定义Statement
@@ -42,7 +42,7 @@ public class DataBackup {
 		return list;
 	}
 	//备份数据库方法
-	public boolean mysqldump(String database,String path) {
+	public static boolean mysqldump(String database,String path) {
 		//备份数据库
 		try {
 			Process p = Runtime.getRuntime().exec("cmd.exe /c mysqldump -uroot -p111"+database+">"+path);
@@ -56,5 +56,25 @@ public class DataBackup {
 			return false;
 		}
 		return true;
+	}
+	public static boolean mysqlresume(String database, String path) { // 恢复数据库
+	    try {
+    		String cmd = null;
+	    	if("直接恢复".equals(database)) {
+	    		cmd = String.format("mysql -u%s -p%s -B  information_schema < %s", user,passWord,path);
+	    	}else {
+	    		cmd = String.format("mysql -u%s -p%s %s < %s", user,passWord,database,path);
+	    	}
+	        Process p = Runtime.getRuntime().exec("cmd.exe /c "+cmd); // 执行恢复语句
+	        StringBuffer out1 = new StringBuffer(); // 定义字符串缓冲对象
+	        byte[] b = new byte[1024]; // 定义字节数组
+	        for (int i; ((i = p.getInputStream().read(b)) != -1);) { // 将数据写入到指定文件中
+	            out1.append(new String(b, 0, i)); // 向流中追加数据
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	    return true;
 	}
 }
