@@ -107,9 +107,17 @@ public class MainFrame extends JFrame {
 //        }
         dataBaseComboBox1  = new JComboBox(daName);
         dataBaseComboBox1.setBounds(182, 36, 187, 21);
+        dataBaseComboBox1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("dataBaseComboBox1 changed!");
+				fileTextField1.setText("D:\\"+dataBaseComboBox1.getSelectedItem()+".sql");
+			}
+		});
         panel.add(dataBaseComboBox1);
         
-        JLabel backLabel = new JLabel("备份文件保存名称：");
+        JLabel backLabel = new JLabel("备份文件保存路径：");
         backLabel.setBounds(62, 85, 117, 15);
         panel.add(backLabel);
         
@@ -131,9 +139,9 @@ public class MainFrame extends JFrame {
 	//备份按钮的单击事件
 	protected void do_backButton_actionPerformed(ActionEvent agr0) {
 		String dataBase = dataBaseComboBox1.getSelectedItem().toString();
-		String name = fileTextField1.getText();
-		if(!dataBase.equals("请选择配置文件") && !name.equals("")) {
-			DBUtil.mysqldump(dataBase,"D:\\"+name);
+		String path = fileTextField1.getText();
+		if(!dataBase.equals("请选择配置文件") && !path.equals("")) {
+			DBUtil.mysqldump(dataBase,path);
 			JOptionPane.showMessageDialog(getContentPane(), "数据备份成功！","信息提示框",JOptionPane.WARNING_MESSAGE);
 		}
 	}

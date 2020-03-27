@@ -46,7 +46,9 @@ public class DBUtil {
 	public static boolean mysqldump(String database,String path) {
 		//备份数据库
 		try {
-			Process p = Runtime.getRuntime().exec("cmd.exe /c mysqldump -uroot -p111"+database+">"+path);
+			String cmd = String.format("mysqldump -u%s -p%s %s > %s", user,passWord,database,path);
+			System.out.println(cmd);
+			Process p = Runtime.getRuntime().exec("cmd.exe /c "+cmd);
 			StringBuffer out1 = new StringBuffer();
 			byte[] b = new byte[1024];
 			for(int i;((i=p.getInputStream().read(b)) != -1);) {
@@ -66,6 +68,7 @@ public class DBUtil {
 	    	}else {
 	    		cmd = String.format("mysql -u%s -p%s %s < %s", user,passWord,database,path);
 	    	}
+	    	System.out.println(cmd);
 	        Process p = Runtime.getRuntime().exec("cmd.exe /c "+cmd); // 执行恢复语句
 	        StringBuffer out1 = new StringBuffer(); // 定义字符串缓冲对象
 	        byte[] b = new byte[1024]; // 定义字节数组
