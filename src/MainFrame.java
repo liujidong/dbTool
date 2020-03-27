@@ -50,7 +50,8 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() throws HeadlessException {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 250);
+        setBounds(600, 500, 450, 300);
+        //setLocationRelativeTo(null);  
         setTitle("MySQL数据库工具");
         
         JMenuBar menuBar = new JMenuBar();
@@ -70,6 +71,7 @@ public class MainFrame extends JFrame {
 				FileFilter filter = new FileNameExtensionFilter("配置文件（properties）", "properties");// 设置文件过滤器				
 				fileChooser.setFileFilter(filter);
 				fileChooser.showOpenDialog(getContentPane());// 显示文件选择对话框
+				if(fileChooser.getSelectedFile()==null) {return;}
 		        List list = DBUtil.getDatabases(ConfigUtil.getProperties(fileChooser));
 		        
 		        dataBaseComboBox1.removeAll();
@@ -193,8 +195,11 @@ public class MainFrame extends JFrame {
         String dataName = dataBaseComboBox2.getSelectedItem().toString();
         if (!fileName.equals("") && (!dataName.equals("请选择配置文件"))) {
             boolean bool = DBUtil.mysqlresume(dataName, fileName);
-            JOptionPane.showMessageDialog(getContentPane(), 
-                    "数据恢复成功！", "信息提示框", JOptionPane.WARNING_MESSAGE);
+        	String msg = "数据恢复成功！";
+            if(bool==false) {
+            	msg = "数据恢复失败！";
+            }
+        	JOptionPane.showMessageDialog(getContentPane(), msg, "信息提示框", JOptionPane.WARNING_MESSAGE);
         }
     }
 }

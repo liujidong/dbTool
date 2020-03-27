@@ -13,7 +13,7 @@ public class ConfigUtil {
 	public static void propertyOut(File file) {
 		Properties prop = new Properties();
 		prop.setProperty("driverName", "com.mysql.jdbc.Driver");
-		prop.setProperty("url", "jdbc:mysql://localhost:3306/mysqldemo");
+		prop.setProperty("url", "jdbc:mysql://localhost:3306/information_schema");
 		prop.setProperty("user", "root");
 		prop.setProperty("password", "123456");
 		
@@ -37,6 +37,6 @@ public class ConfigUtil {
 
 			}
 		}
-		return null;
+		return prop;
 	}
 }

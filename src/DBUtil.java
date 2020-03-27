@@ -16,9 +16,9 @@ public class DBUtil {
 		try {
 			Class.forName(prop.getProperty("driverName","com.mysql.jdbc.Driver"));//加载MySQL数据驱动
 			String url = prop.getProperty("url", "jdbc:mysql://localhost:3306/mysqldemo");//定义与连接数据库的url
-			String user = prop.getProperty("user", "root");//定义连接数据库的用户名
-			String password = prop.getProperty("password","123456");//定义连接数据库的密码
-			conn = DriverManager.getConnection(url,user,password);//创建连接
+			user = prop.getProperty("user", "root");//定义连接数据库的用户名
+			passWord = prop.getProperty("password","123456");//定义连接数据库的密码
+			conn = DriverManager.getConnection(url,user,passWord);//创建连接
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -31,7 +31,8 @@ public class DBUtil {
 		Statement st;//定义Statement
 		try {
 			st = con.createStatement();//实例化Statement对象
-			ResultSet rs = st.executeQuery("select schema_name from SCHEMATA");
+			//ResultSet rs = st.executeQuery("select schema_name from SCHEMATA")
+			ResultSet rs = st.executeQuery("show databases");
 			//遍历循环查询结果集
 			while(rs.next()) {
 				list.add(rs.getString(1));//将查询数据添加到List集合中
