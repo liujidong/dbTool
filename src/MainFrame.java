@@ -42,7 +42,7 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-		File file = new File("db-default.properties");
+		File file = new File(ConfigUtil.DB_DEFAULT);
 		if(file.exists()==false) {
 			ConfigUtil.propertyOut(file);
 		}
@@ -105,11 +105,11 @@ public class MainFrame extends JFrame {
         JLabel messageLabel = new JLabel("选择需要备份的数据库：");
         messageLabel.setBounds(37, 39, 148, 15);
         panel.add(messageLabel);
-//        List list = dataBackup.getDatabase();
-        String[] daName = new String[]{"请选择配置文件"};
-//        for(int i = 0;i<list.size();i++){
-//            daName[i] = list.get(i).toString();
-//        }
+        List list = DBUtil.getDatabases();
+        String[] daName = new String[list.size()];
+        for(int i = 0;i<list.size();i++){
+      	  daName[i] = list.get(i).toString();
+        }
         dataBaseComboBox1  = new JComboBox(daName);
         dataBaseComboBox1.setBounds(182, 36, 187, 21);
         panel.add(dataBaseComboBox1);
@@ -146,7 +146,7 @@ public class MainFrame extends JFrame {
 	protected void do_backButton_actionPerformed(ActionEvent agr0) {
 		String dataBase = dataBaseComboBox1.getSelectedItem().toString();
 		String path = fileTextField1.getText();
-		if(!dataBase.equals("请选择配置文件") && !path.equals("")) {
+		if(!dataBase.equals(DBUtil.TIP_DEFAULT) && !path.equals("")) {
 			DBUtil.mysqldump(dataBase,path);
 			JOptionPane.showMessageDialog(getContentPane(), "数据备份成功！","信息提示框",JOptionPane.WARNING_MESSAGE);
 		}
@@ -176,12 +176,12 @@ public class MainFrame extends JFrame {
         JLabel databaseLabel = new JLabel("恢复数据库：");
         databaseLabel.setBounds(36, 89, 80, 15);
         panel.add(databaseLabel);
-//        List list = util.getDatabase();
-        String name[] = new String[]{"请选择配置文件"};//[list.size()];
-//        for (int i = 0; i < list.size(); i++) {
-//            name[i] = (String) list.get(i);
-//        }
-        dataBaseComboBox2 = new JComboBox(name);
+        List list = DBUtil.getDatabases();
+        String[] names = new String[list.size()];
+        for(int i = 0;i<list.size();i++){
+        	names[i] = list.get(i).toString();
+        }
+        dataBaseComboBox2 = new JComboBox(names);
         dataBaseComboBox2.setBounds(125, 86, 174, 21);
         panel.add(dataBaseComboBox2);
         
@@ -211,7 +211,7 @@ public class MainFrame extends JFrame {
     protected void do_resumeButton_actionPerformed(ActionEvent arg0) {        
         String fileName = fileTextField2.getText();
         String dataName = dataBaseComboBox2.getSelectedItem().toString();
-        if (!fileName.equals("") && (!dataName.equals("请选择配置文件"))) {
+        if (!fileName.equals("") && (!dataName.equals(DBUtil.TIP_DEFAULT))) {
             boolean bool = DBUtil.mysqlresume(dataName, fileName);
         	String msg = "数据恢复成功！";
             if(bool==false) {

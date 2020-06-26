@@ -9,6 +9,7 @@ import javax.swing.JFileChooser;
 
 public class ConfigUtil {
 	public static Properties prop = new Properties();
+	public static final String DB_DEFAULT="db-default.properties";
 
 	public static void propertyOut(File file) {
 		Properties prop = new Properties();
@@ -30,6 +31,21 @@ public class ConfigUtil {
 			//Properties prop = new Properties();
 			try {
 				InputStream in = new BufferedInputStream(new FileInputStream(fileChooser.getSelectedFile()));
+				prop.load(in);     ///加载属性列表
+				in.close();
+			}catch (Exception e) {
+				System.out.println(e);
+
+			}
+		}
+		return prop;
+	}
+	public static Properties getProperties() {
+		File file = new File(DB_DEFAULT);
+		if(file.exists()) {
+			//Properties prop = new Properties();
+			try {
+				InputStream in = new BufferedInputStream(new FileInputStream(file));
 				prop.load(in);     ///加载属性列表
 				in.close();
 			}catch (Exception e) {

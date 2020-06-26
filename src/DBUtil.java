@@ -11,13 +11,14 @@ public class DBUtil {
 	static Connection conn = null;
     private static String user="root";
     private static String passWord = "111";
+	public  static final String TIP_DEFAULT="请选择或修改配置文件";
 	public static Connection getConnection(Properties prop) {
 		if(null == prop) {return null;}
 		try {
 			Class.forName(prop.getProperty("driverName","com.mysql.jdbc.Driver"));//加载MySQL数据驱动
-			String url = prop.getProperty("url", "jdbc:mysql://localhost:3306/mysqldemo");//定义与连接数据库的url
+			String url = prop.getProperty("url", "jdbc:mysql://localhost:3306/information_schema");//定义与连接数据库的url
 			user = prop.getProperty("user", "root");//定义连接数据库的用户名
-			passWord = prop.getProperty("password","123456");//定义连接数据库的密码
+			passWord = prop.getProperty("password","root");//定义连接数据库的密码
 			conn = DriverManager.getConnection(url,user,passWord);//创建连接
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -39,9 +40,14 @@ public class DBUtil {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			list.add(TIP_DEFAULT);
 		}
 		return list;
 	}
+	//获取MySQL所有数据库方法
+	public static List getDatabases() {
+		return getDatabases(ConfigUtil.getProperties());
+	}	
 	//备份数据库方法
 	public static boolean mysqldump(String database,String path) {
 		//备份数据库
