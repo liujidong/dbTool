@@ -14,37 +14,37 @@ public class DBUtil {
 	public static Connection getConnection(Properties prop) {
 		if(null == prop) {return null;}
 		try {
-			Class.forName(prop.getProperty("driverName","com.mysql.jdbc.Driver"));//¼ÓÔØMySQLÊı¾İÇı¶¯
-			String url = prop.getProperty("url", "jdbc:mysql://localhost:3306/mysqldemo");//¶¨ÒåÓëÁ¬½ÓÊı¾İ¿âµÄurl
-			user = prop.getProperty("user", "root");//¶¨ÒåÁ¬½ÓÊı¾İ¿âµÄÓÃ»§Ãû
-			passWord = prop.getProperty("password","123456");//¶¨ÒåÁ¬½ÓÊı¾İ¿âµÄÃÜÂë
-			conn = DriverManager.getConnection(url,user,passWord);//´´½¨Á¬½Ó
+			Class.forName(prop.getProperty("driverName","com.mysql.jdbc.Driver"));//åŠ è½½MySQLæ•°æ®é©±åŠ¨
+			String url = prop.getProperty("url", "jdbc:mysql://localhost:3306/mysqldemo");//å®šä¹‰ä¸è¿æ¥æ•°æ®åº“çš„url
+			user = prop.getProperty("user", "root");//å®šä¹‰è¿æ¥æ•°æ®åº“çš„ç”¨æˆ·å
+			passWord = prop.getProperty("password","123456");//å®šä¹‰è¿æ¥æ•°æ®åº“çš„å¯†ç 
+			conn = DriverManager.getConnection(url,user,passWord);//åˆ›å»ºè¿æ¥
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return conn;
 	}
-	//»ñÈ¡MySQLËùÓĞÊı¾İ¿â·½·¨
+	//è·å–MySQLæ‰€æœ‰æ•°æ®åº“æ–¹æ³•
 	public static List getDatabases(Properties prop) {
-		List list = new ArrayList();//¶¨ÒåList¼¯ºÏ¶ÔÏó
-		Connection con = getConnection(prop);//»ñÈ¡Êı¾İ¿âÁ¬½Ó
-		Statement st;//¶¨ÒåStatement
+		List list = new ArrayList();//å®šä¹‰Listé›†åˆå¯¹è±¡
+		Connection con = getConnection(prop);//è·å–æ•°æ®åº“è¿æ¥
+		Statement st;//å®šä¹‰Statement
 		try {
-			st = con.createStatement();//ÊµÀı»¯Statement¶ÔÏó
+			st = con.createStatement();//å®ä¾‹åŒ–Statementå¯¹è±¡
 			//ResultSet rs = st.executeQuery("select schema_name from SCHEMATA")
 			ResultSet rs = st.executeQuery("show databases");
-			//±éÀúÑ­»·²éÑ¯½á¹û¼¯
+			//éå†å¾ªç¯æŸ¥è¯¢ç»“æœé›†
 			while(rs.next()) {
-				list.add(rs.getString(1));//½«²éÑ¯Êı¾İÌí¼Óµ½List¼¯ºÏÖĞ
+				list.add(rs.getString(1));//å°†æŸ¥è¯¢æ•°æ®æ·»åŠ åˆ°Listé›†åˆä¸­
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return list;
 	}
-	//±¸·İÊı¾İ¿â·½·¨
+	//å¤‡ä»½æ•°æ®åº“æ–¹æ³•
 	public static boolean mysqldump(String database,String path) {
-		//±¸·İÊı¾İ¿â
+		//å¤‡ä»½æ•°æ®åº“
 		try {
 			String cmd = String.format("mysqldump -u%s -p%s %s > %s", user,passWord,database,path);
 			System.out.println(cmd);
@@ -60,20 +60,20 @@ public class DBUtil {
 		}
 		return true;
 	}
-	public static boolean mysqlresume(String database, String path) { // »Ö¸´Êı¾İ¿â
+	public static boolean mysqlresume(String database, String path) { // æ¢å¤æ•°æ®åº“
 	    try {
     		String cmd = null;
-	    	if("Ö±½Ó»Ö¸´".equals(database)) {
+	    	if("ç›´æ¥æ¢å¤".equals(database)) {
 	    		cmd = String.format("mysql -u%s -p%s -B  information_schema < %s", user,passWord,path);
 	    	}else {
 	    		cmd = String.format("mysql -u%s -p%s %s < %s", user,passWord,database,path);
 	    	}
 	    	System.out.println(cmd);
-	        Process p = Runtime.getRuntime().exec("cmd.exe /c "+cmd); // Ö´ĞĞ»Ö¸´Óï¾ä
-	        StringBuffer out1 = new StringBuffer(); // ¶¨Òå×Ö·û´®»º³å¶ÔÏó
-	        byte[] b = new byte[1024]; // ¶¨Òå×Ö½ÚÊı×é
-	        for (int i; ((i = p.getInputStream().read(b)) != -1);) { // ½«Êı¾İĞ´Èëµ½Ö¸¶¨ÎÄ¼şÖĞ
-	            out1.append(new String(b, 0, i)); // ÏòÁ÷ÖĞ×·¼ÓÊı¾İ
+	        Process p = Runtime.getRuntime().exec("cmd.exe /c "+cmd); // æ‰§è¡Œæ¢å¤è¯­å¥
+	        StringBuffer out1 = new StringBuffer(); // å®šä¹‰å­—ç¬¦ä¸²ç¼“å†²å¯¹è±¡
+	        byte[] b = new byte[1024]; // å®šä¹‰å­—èŠ‚æ•°ç»„
+	        for (int i; ((i = p.getInputStream().read(b)) != -1);) { // å°†æ•°æ®å†™å…¥åˆ°æŒ‡å®šæ–‡ä»¶ä¸­
+	            out1.append(new String(b, 0, i)); // å‘æµä¸­è¿½åŠ æ•°æ®
 	        }
 	    } catch (IOException e) {
 	        e.printStackTrace();

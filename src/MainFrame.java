@@ -52,25 +52,26 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(600, 500, 450, 300);
         //setLocationRelativeTo(null);  
-        setTitle("MySQLÊı¾İ¿â¹¤¾ß");
-        
+        setTitle("MySQLæ•°æ®åº“å·¥å…·");
+        //---------èœå•éƒ¨åˆ†--------------
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
-        
-        JMenu fileMenu = new JMenu("ÅäÖÃÎÄ¼ş");
-        fileMenu.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 16));
+        //é…ç½®æ–‡ä»¶>æ‰“å¼€
+        JMenu fileMenu = new JMenu("é…ç½®æ–‡ä»¶");
+        fileMenu.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 16));
         menuBar.add(fileMenu);
         
-        JMenuItem openMenuItem = new JMenuItem("´ò¿ª");
-        openMenuItem.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 16));
+        JMenuItem openMenuItem = new JMenuItem("æ‰“å¼€");
+        openMenuItem.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 16));
         fileMenu.add(openMenuItem);
+        //------------èœå•äº‹ä»¶----------------
         openMenuItem.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FileFilter filter = new FileNameExtensionFilter("ÅäÖÃÎÄ¼ş£¨properties£©", "properties");// ÉèÖÃÎÄ¼ş¹ıÂËÆ÷				
+				FileFilter filter = new FileNameExtensionFilter("é…ç½®æ–‡ä»¶ï¼ˆpropertiesï¼‰", "properties");// è®¾ç½®æ–‡ä»¶è¿‡æ»¤å™¨				
 				fileChooser.setFileFilter(filter);
-				fileChooser.showOpenDialog(getContentPane());// ÏÔÊ¾ÎÄ¼şÑ¡Ôñ¶Ô»°¿ò
+				fileChooser.showOpenDialog(getContentPane());// æ˜¾ç¤ºæ–‡ä»¶é€‰æ‹©å¯¹è¯æ¡†
 				if(fileChooser.getSelectedFile()==null) {return;}
 		        List list = DBUtil.getDatabases(ConfigUtil.getProperties(fileChooser));
 		        
@@ -79,45 +80,41 @@ public class MainFrame extends JFrame {
 		        	dataBaseComboBox1.addItem(list.get(i));
 		        }
 		        dataBaseComboBox2.removeAll();
-		        dataBaseComboBox2.addItem("Ö±½Ó»Ö¸´");
+		        dataBaseComboBox2.addItem("ç›´æ¥æ¢å¤");
 		        for(int i = 0;i<list.size();i++){
 		        	dataBaseComboBox2.addItem(list.get(i));
 		        }
 			}
 		});
-        
+        //-------------tabé¡µ------------------
         JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("±¸·İ", initPane1());
-        tabs.addTab("»Ö¸´", initPane2());
+        tabs.addTab("å¤‡ä»½", initPane1());
+        tabs.addTab("æ¢å¤", initPane2());
         setContentPane(tabs);
 	}
+	//é¡µé¢å¸ƒå±€ï¼š
+	//	é€‰æ‹©éœ€è¦å¤‡ä»½çš„æ•°æ®åº“ï¼šã€è¯·é€‰æ‹©é…ç½®æ–‡ä»¶ ã€‘
+	//  å¤‡ä»½æ–‡ä»¶ä¿å­˜è·¯å¾„ï¼š	  ã€                                     ã€‘
+	//               ã€å¤‡ä»½ã€‘
 	protected JPanel initPane1() {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
         panel.setBounds(0, 0, 434, 196);
         panel.setLayout(null);
         
-        JLabel messageLabel = new JLabel("Ñ¡ÔñĞèÒª±¸·İµÄÊı¾İ¿â£º");
+        JLabel messageLabel = new JLabel("é€‰æ‹©éœ€è¦å¤‡ä»½çš„æ•°æ®åº“ï¼š");
         messageLabel.setBounds(37, 39, 148, 15);
         panel.add(messageLabel);
 //        List list = dataBackup.getDatabase();
-        String[] daName = new String[]{"ÇëÑ¡ÔñÅäÖÃÎÄ¼ş"};
+        String[] daName = new String[]{"è¯·é€‰æ‹©é…ç½®æ–‡ä»¶"};
 //        for(int i = 0;i<list.size();i++){
 //            daName[i] = list.get(i).toString();
 //        }
         dataBaseComboBox1  = new JComboBox(daName);
         dataBaseComboBox1.setBounds(182, 36, 187, 21);
-        dataBaseComboBox1.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("dataBaseComboBox1 changed!");
-				fileTextField1.setText("D:\\"+dataBaseComboBox1.getSelectedItem()+".sql");
-			}
-		});
         panel.add(dataBaseComboBox1);
         
-        JLabel backLabel = new JLabel("±¸·İÎÄ¼ş±£´æÂ·¾¶£º");
+        JLabel backLabel = new JLabel("å¤‡ä»½æ–‡ä»¶ä¿å­˜è·¯å¾„ï¼š");
         backLabel.setBounds(62, 85, 117, 15);
         panel.add(backLabel);
         
@@ -126,32 +123,44 @@ public class MainFrame extends JFrame {
         panel.add(fileTextField1);
         fileTextField1.setColumns(10);
         
-        JButton backButton = new JButton("±¸·İ");
+        JButton backButton = new JButton("å¤‡ä»½");
+        backButton.setBounds(171, 141, 93, 23);
+        panel.add(backButton);
+        //----------æ·»åŠ äº‹ä»¶å¤„ç†------------
+        dataBaseComboBox1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("dataBaseComboBox1 changed!");
+				fileTextField1.setText("D:\\"+dataBaseComboBox1.getSelectedItem()+".sql");
+			}
+		});
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 do_backButton_actionPerformed(arg0);
             }
         });
-        backButton.setBounds(171, 141, 93, 23);
-        panel.add(backButton);
         return panel;
 	}
-	//±¸·İ°´Å¥µÄµ¥»÷ÊÂ¼ş
+	//å¤‡ä»½æŒ‰é’®çš„å•å‡»äº‹ä»¶
 	protected void do_backButton_actionPerformed(ActionEvent agr0) {
 		String dataBase = dataBaseComboBox1.getSelectedItem().toString();
 		String path = fileTextField1.getText();
-		if(!dataBase.equals("ÇëÑ¡ÔñÅäÖÃÎÄ¼ş") && !path.equals("")) {
+		if(!dataBase.equals("è¯·é€‰æ‹©é…ç½®æ–‡ä»¶") && !path.equals("")) {
 			DBUtil.mysqldump(dataBase,path);
-			JOptionPane.showMessageDialog(getContentPane(), "Êı¾İ±¸·İ³É¹¦£¡","ĞÅÏ¢ÌáÊ¾¿ò",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(getContentPane(), "æ•°æ®å¤‡ä»½æˆåŠŸï¼","ä¿¡æ¯æç¤ºæ¡†",JOptionPane.WARNING_MESSAGE);
 		}
 	}
+	//é¡µé¢å¸ƒå±€ï¼š
+	//	å¤‡ä»½æ–‡ä»¶ï¼šã€                                        ã€‘ã€æµè§ˆã€‘
+	//  æ¢å¤æ•°æ®åº“ï¼š	  ã€ è¯·é€‰æ‹©é…ç½®æ–‡ä»¶  ã€‘ã€æ¢å¤ã€‘
 	protected JPanel initPane2() {
         JPanel panel = new JPanel();
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
         panel.setBounds(0, 0, 434, 139);
         panel.setLayout(null);
         
-        JLabel fileLabel = new JLabel("±¸·İÎÄ¼ş£º");
+        JLabel fileLabel = new JLabel("å¤‡ä»½æ–‡ä»¶ï¼š");
         fileLabel.setBounds(48, 43, 67, 15);
         panel.add(fileLabel);
         
@@ -160,20 +169,15 @@ public class MainFrame extends JFrame {
         panel.add(fileTextField2);
         fileTextField2.setColumns(10);
         
-        JButton browseButton = new JButton("ä¯ÀÀ");
-        browseButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                do_browseButton_actionPerformed(arg0);
-            }
-        });
+        JButton browseButton = new JButton("æµè§ˆ");
         browseButton.setBounds(320, 39, 74, 23);
         panel.add(browseButton);
         
-        JLabel databaseLabel = new JLabel("»Ö¸´Êı¾İ¿â£º");
+        JLabel databaseLabel = new JLabel("æ¢å¤æ•°æ®åº“ï¼š");
         databaseLabel.setBounds(36, 89, 80, 15);
         panel.add(databaseLabel);
 //        List list = util.getDatabase();
-        String name[] = new String[]{"ÇëÑ¡ÔñÅäÖÃÎÄ¼ş"};//[list.size()];
+        String name[] = new String[]{"è¯·é€‰æ‹©é…ç½®æ–‡ä»¶"};//[list.size()];
 //        for (int i = 0; i < list.size(); i++) {
 //            name[i] = (String) list.get(i);
 //        }
@@ -181,33 +185,39 @@ public class MainFrame extends JFrame {
         dataBaseComboBox2.setBounds(125, 86, 174, 21);
         panel.add(dataBaseComboBox2);
         
-        JButton resumeButton = new JButton("»Ö¸´");
+        JButton resumeButton = new JButton("æ¢å¤");
+        resumeButton.setBounds(320, 85, 74, 23);
+        panel.add(resumeButton);
+        //----------äº‹ä»¶å¤„ç†------------------
+        browseButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                do_browseButton_actionPerformed(arg0);
+            }
+        });
         resumeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 do_resumeButton_actionPerformed(arg0);
             }
         });
-        resumeButton.setBounds(320, 85, 74, 23);
-        panel.add(resumeButton);
         return panel;
 	}
-    // ä¯ÀÀ°´Å¥µÄµ¥»÷´¦ÀíÊÂ¼ş
+    // æµè§ˆæŒ‰é’®çš„å•å‡»å¤„ç†äº‹ä»¶
     protected void do_browseButton_actionPerformed(ActionEvent arg0) {
         java.awt.FileDialog fd = new FileDialog(this);
         fd.setVisible(true);
         fileTextField2.setText(fd.getDirectory() + fd.getFile());        
     } 
-    // »Ö¸´°´Å¥µÄµ¥»÷ÊÂ¼ş
+    // æ¢å¤æŒ‰é’®çš„å•å‡»äº‹ä»¶
     protected void do_resumeButton_actionPerformed(ActionEvent arg0) {        
         String fileName = fileTextField2.getText();
         String dataName = dataBaseComboBox2.getSelectedItem().toString();
-        if (!fileName.equals("") && (!dataName.equals("ÇëÑ¡ÔñÅäÖÃÎÄ¼ş"))) {
+        if (!fileName.equals("") && (!dataName.equals("è¯·é€‰æ‹©é…ç½®æ–‡ä»¶"))) {
             boolean bool = DBUtil.mysqlresume(dataName, fileName);
-        	String msg = "Êı¾İ»Ö¸´³É¹¦£¡";
+        	String msg = "æ•°æ®æ¢å¤æˆåŠŸï¼";
             if(bool==false) {
-            	msg = "Êı¾İ»Ö¸´Ê§°Ü£¡";
+            	msg = "æ•°æ®æ¢å¤å¤±è´¥ï¼";
             }
-        	JOptionPane.showMessageDialog(getContentPane(), msg, "ĞÅÏ¢ÌáÊ¾¿ò", JOptionPane.WARNING_MESSAGE);
+        	JOptionPane.showMessageDialog(getContentPane(), msg, "ä¿¡æ¯æç¤ºæ¡†", JOptionPane.WARNING_MESSAGE);
         }
     }
 }

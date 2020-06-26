@@ -18,7 +18,7 @@ public class ConfigUtil {
 		prop.setProperty("password", "123456");
 		
 		try {
-			FileOutputStream oFile = new FileOutputStream(file, true);//true±íÊ¾×·¼Ó´ò¿ª
+			FileOutputStream oFile = new FileOutputStream(file, true);//trueè¡¨ç¤ºè¿½åŠ æ‰“å¼€
 			prop.store(oFile, "The New properties file");
 			oFile.close();
 		}catch (Exception e) {
@@ -30,7 +30,7 @@ public class ConfigUtil {
 			//Properties prop = new Properties();
 			try {
 				InputStream in = new BufferedInputStream(new FileInputStream(fileChooser.getSelectedFile()));
-				prop.load(in);     ///¼ÓÔØÊôÐÔÁÐ±í
+				prop.load(in);     ///åŠ è½½å±žæ€§åˆ—è¡¨
 				in.close();
 			}catch (Exception e) {
 				System.out.println(e);
