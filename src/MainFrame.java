@@ -210,9 +210,14 @@ public class MainFrame extends JFrame {
     // 恢复按钮的单击事件
     protected void do_resumeButton_actionPerformed(ActionEvent arg0) {        
         String fileName = fileTextField2.getText();
-        String dataName = dataBaseComboBox2.getSelectedItem().toString();
-        if (!fileName.equals("") && (!dataName.equals(DBUtil.TIP_DEFAULT))) {
-            boolean bool = DBUtil.mysqlresume(dataName, fileName);
+        String errMsg = SqlFileUtil.checkSqlFile(new File(fileName));
+        if(null != errMsg) {
+        	int n = JOptionPane.showConfirmDialog(null, errMsg, "是否继续？",JOptionPane.YES_NO_OPTION);//返回的是按钮的index  i=0或者1 
+        	if(n>0) {return;}
+        }
+        String dbName = dataBaseComboBox2.getSelectedItem().toString();
+        if (!fileName.equals("") && (!dbName.equals(DBUtil.TIP_DEFAULT))) {
+            boolean bool = DBUtil.mysqlresume(dbName, fileName);
         	String msg = "数据恢复成功！";
             if(bool==false) {
             	msg = "数据恢复失败！";
